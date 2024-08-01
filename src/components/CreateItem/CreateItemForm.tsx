@@ -86,7 +86,7 @@ export const CreateOrderForm: React.FC<Props> = ({ onClose }) => {
     };
 
     // @ts-ignore
-    dispatch(orderActions.addOrder(newOrder));
+    dispatch(orderActions.addOrderToLocalStorage(newOrder));
     onClose();
     toast({
       title: t("orderCreated"),
@@ -117,6 +117,7 @@ export const CreateOrderForm: React.FC<Props> = ({ onClose }) => {
       justifyContent="center"
     >
       <Box
+        position="relative"
         bg="white"
         p={4}
         borderRadius="md"
@@ -131,6 +132,7 @@ export const CreateOrderForm: React.FC<Props> = ({ onClose }) => {
           position="absolute"
           top="10px"
           right="10px"
+          zIndex="100"
         />
         <form onSubmit={handleSubmit}>
           <VStack spacing={4} align="start">
@@ -163,7 +165,6 @@ export const CreateOrderForm: React.FC<Props> = ({ onClose }) => {
                     ),
                   })
                 }
-                multiple
               >
                 {products.map((product) => (
                   <option key={product.id} value={product.id}>

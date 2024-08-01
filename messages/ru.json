@@ -22,7 +22,9 @@
     "validationError": "Ошибка проверки",
     "validationErrorMessage": "Пожалуйста, заполните все обязательные поля.",
     "orderCreated": "Приход создан",
-    "orderCreatedMessage": "Ваш приход успешно создан."
+    "orderCreatedMessage": "Ваш приход успешно создан.",
+    "title": "Название",
+    "description": "Описание"
   },
   "products": {
     "items": "Продукты",

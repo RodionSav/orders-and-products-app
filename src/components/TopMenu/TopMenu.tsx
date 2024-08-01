@@ -8,16 +8,14 @@ import {
   IconButton,
   Icon,
   Button,
-  useDisclosure,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { FaBars, FaRegClock, FaShieldAlt } from "react-icons/fa";
 import { useTranslations } from "next-intl";
-import * as sessionActions from "../features/sessionSlice";
-import { cookies } from "next/headers";
+import { io, Socket } from "socket.io-client";
 import LanguageSwitch from "../LanguageSwitch/LanguageSwitch";
+import { Gamja_Flower } from "next/font/google";
 
 type Props = {
   onToggle: () => void;
@@ -26,16 +24,27 @@ type Props = {
 const TopMenu: React.FC<Props> = ({ onToggle }) => {
   const t = useTranslations("navigation");
   const [time, setTime] = useState<Date | null>(null);
-  const sessions = useAppSelector((state) => state.sessions.activeSessions);
-  const dispatch = useAppDispatch();
-
-
+  const [sessions, setSessions] = useState<number>(0);
 
   useEffect(() => {
+    // Set current time and update it every second
     setTime(new Date());
     const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, [dispatch]);
+
+    // Initialize Socket.io client
+    const socket: Socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:4000", {transports: ['websocket']} );
+
+    // Listen for session count updates
+    socket.on("sessionCount", (count: number) => {
+      setSessions(count);
+    });
+
+    // Clean up on component unmount
+    return () => {
+      clearInterval(interval);
+      socket.disconnect();
+    };
+  }, []);
 
   return (
     <Flex bg="white" p={4} boxShadow="sm" align="center">
@@ -71,8 +80,12 @@ const TopMenu: React.FC<Props> = ({ onToggle }) => {
           </Box>
         )}
       </Box>
-      <LanguageSwitch />
-
+      <Box ml={4}>
+        <Button onClick={() => LanguageSwitch("en")}>English</Button>
+        <Button onClick={() => LanguageSwitch("ru")} ml={2}>
+          Русский
+        </Button>
+      </Box>
     </Flex>
   );
 };

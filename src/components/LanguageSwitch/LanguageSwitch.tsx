@@ -1,19 +1,17 @@
-"use client"; // Ensure this is a client component
+'use server';
 
+// Ensure this is a client component
 import { Box, Button } from "@chakra-ui/react";
+import { cookies } from "next/headers";
+import { setLanguage } from "../features/languageSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import * as languageActions from '../features/languageSlice';
+import { redirect } from "next/navigation";
 
-export default function LanguageSwitch() {
-  // Function to change language by setting a cookie
-  const changeLanguage = (newLocale: string) => {
-//     Cookies.set("locale", newLocale); // Set the cookie on the client side
-  };
 
-  return (
-    <Box ml={4}>
-      <Button onClick={() => changeLanguage("en")}>English</Button>
-      <Button onClick={() => changeLanguage("ru")} ml={2}>
-        Русский
-      </Button>
-    </Box>
-  );
+export default async function LanguageSwitch(newLocale: string) {
+
+  cookies().set("locale", newLocale);
+  redirect('/');
+
 }

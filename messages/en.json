@@ -22,7 +22,9 @@
     "validationError": "Validation Error",
     "validationErrorMessage": "Please fill in all required fields.",
     "orderCreated": "Order Created",
-    "orderCreatedMessage": "Your order has been created successfully."
+    "orderCreatedMessage": "Your order has been created successfully.",
+    "title": "Title",
+    "description": "Description"
   },
   "products": {
     "items": "Products",

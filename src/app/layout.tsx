@@ -1,11 +1,12 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { getLocale, getMessages } from "next-intl/server";
-import { NextIntlClientProvider } from 'next-intl';
+import { NextIntlClientProvider } from "next-intl";
 import ClientProviders from "../components/ClientProviders/ClientProviders";
 import TopMenu from "@/components/TopMenu/TopMenu";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import { Box, useDisclosure } from "@chakra-ui/react";
+import { useAppSelector } from "@/redux/hooks";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,9 +27,7 @@ export default async function RootLayout({
       </head>
       <body>
         <NextIntlClientProvider messages={messages}>
-          <ClientProviders>
-            {children}
-          </ClientProviders>
+          <ClientProviders>{children}</ClientProviders>
         </NextIntlClientProvider>
       </body>
     </html>
