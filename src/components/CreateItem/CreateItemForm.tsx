@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -14,7 +14,9 @@ import {
   CloseButton,
 } from "@chakra-ui/react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { addOrder } from "../features/ordersSlice";
+import * as orderActions from "../features/ordersSlice";
+import * as productActions from "../features/productsSlice";
+import { useTranslations } from "next-intl";
 
 interface Product {
   id: number;
@@ -58,155 +60,120 @@ export const CreateOrderForm: React.FC<Props> = ({ onClose }) => {
   });
 
   const dispatch = useAppDispatch();
-  const toast = useToast();
-
   const products = useAppSelector((state) => state.products.products);
-  const orders = useAppSelector((state) => state.orders.orders);
+  const toast = useToast();
+  const t = useTranslations("orders");
+  const productTranslations = useTranslations("products");
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setOrder((prevOrder) => ({
-      ...prevOrder,
-      [name]: value,
-    }));
-  };
-
-  // Handle product selection
-  const handleProductSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const productId = parseInt(e.target.value);
-    const selectedProduct = products.find(
-      (product) => product.id === productId
-    );
-    if (
-      selectedProduct &&
-      !order.products.some((product) => product.id === selectedProduct.id)
-    ) {
-      setOrder((prevOrder) => ({
-        ...prevOrder,
-        products: [...prevOrder.products, selectedProduct],
-      }));
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (!order.title || !order.description) {
       toast({
-        title: "Validation Error",
-        description: "Please fill in all required fields.",
+        title: t("validationError"),
+        description: t("validationErrorMessage"),
         status: "error",
-        duration: 3000,
+        duration: 5000,
         isClosable: true,
       });
       return;
     }
 
-    const currentDate = new Date().toISOString();
-
-    const newOrder: Order = {
+    const newOrder = {
       ...order,
-      id: orders.length ? orders[orders.length - 1].id + 1 : 1,
-      date: currentDate,
+      id: Date.now(),
+      date: new Date().toISOString(),
     };
 
-    dispatch(addOrder(newOrder));
+    // @ts-ignore
+    dispatch(orderActions.addOrder(newOrder));
+    onClose();
     toast({
-      title: "Order Created",
-      description: "Your order has been created successfully.",
+      title: t("orderCreated"),
+      description: t("orderCreatedMessage"),
       status: "success",
-      duration: 3000,
+      duration: 5000,
       isClosable: true,
     });
-    setOrder({
-      id: 0,
-      title: "",
-      description: "",
-      products: [],
-    });
-    onClose();
   };
+
+  useEffect(() => {
+    // @ts-ignore
+    dispatch(productActions.loadProductsFromLocalStorage());
+  }, [dispatch]);
 
   return (
     <Box
+      p={4}
       position="fixed"
       top="0"
       left="0"
-      width="100vw"
-      height="100vh"
-      bg="rgba(0, 0, 0, 0.5)"
+      right="0"
+      bottom="0"
+      bg="rgba(0,0,0,0.5)"
+      zIndex="9999"
       display="flex"
-      justifyContent="center"
       alignItems="center"
-      zIndex="999"
+      justifyContent="center"
     >
       <Box
-        maxW="500px"
-        w="100%"
-        p={6}
         bg="white"
-        boxShadow="md"
+        p={4}
         borderRadius="md"
-        position="relative"
-        zIndex="1000"
+        boxShadow="md"
+        width="100%"
+        maxW="600px"
       >
+        <CloseButton
+          size="lg"
+          onClick={onClose}
+          color="red.500"
+          position="absolute"
+          top="10px"
+          right="10px"
+        />
         <form onSubmit={handleSubmit}>
-          <CloseButton
-            position="absolute"
-            top="10px"
-            right="10px"
-            width="30px"
-            height="30px"
-            onClick={onClose}
-            size="lg"
-            aria-label="Close form"
-            cursor="pointer"
-          />
-          <VStack spacing={4}>
-            <FormControl id="title" isRequired>
-              <FormLabel>Title</FormLabel>
+          <VStack spacing={4} align="start">
+            <FormControl>
+              <FormLabel>{t("title")}</FormLabel>
               <Input
-                name="title"
-                placeholder="Enter order title"
                 value={order.title}
-                onChange={handleChange}
+                onChange={(e) => setOrder({ ...order, title: e.target.value })}
               />
             </FormControl>
-
-            <FormControl id="description" isRequired>
-              <FormLabel>Description</FormLabel>
+            <FormControl>
+              <FormLabel>{t("description")}</FormLabel>
               <Textarea
-                name="description"
-                placeholder="Enter order description"
                 value={order.description}
-                onChange={handleChange}
+                onChange={(e) =>
+                  setOrder({ ...order, description: e.target.value })
+                }
               />
             </FormControl>
-
-            <FormControl id="products">
-              <FormLabel>Products</FormLabel>
+            <FormControl>
+              <FormLabel>{t("products")}</FormLabel>
               <Select
-                placeholder="Select a product"
-                onChange={handleProductSelect}
+                placeholder={productTranslations("chooseType")}
+                value={order.products.map((product) => product.id).join(",")}
+                onChange={(e) =>
+                  setOrder({
+                    ...order,
+                    products: products.filter((product) =>
+                      e.target.value.includes(product.id.toString())
+                    ),
+                  })
+                }
+                multiple
               >
                 {products.map((product) => (
                   <option key={product.id} value={product.id}>
-                    {product.title} - {product.type}
+                    {product.title}
                   </option>
                 ))}
               </Select>
-              <VStack mt={2} align="start">
-                {order.products.map((product) => (
-                  <Box key={product.id} p={2} bg="gray.100" borderRadius="md">
-                    {product.title} ({product.type})
-                  </Box>
-                ))}
-              </VStack>
             </FormControl>
-
-            <Button type="submit" colorScheme="green" size="lg" width="100%">
-              Create Order
+            <Button type="submit" colorScheme="blue">
+              {t("createOrder")}
             </Button>
           </VStack>
         </form>

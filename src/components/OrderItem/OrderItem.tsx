@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Flex, Text, Button, HStack } from "@chakra-ui/react";
 import { Order } from "../../types/types";
 import { DeleteIcon } from "@chakra-ui/icons";
+import { useTranslations } from "next-intl";
 
 interface OrderItemProps {
   order: Order;
@@ -19,6 +20,8 @@ const formatDate = (dateString: string) => {
 };
 
 const OrderItem: React.FC<OrderItemProps> = ({ order, onView, onDelete }) => {
+  const t = useTranslations("orders");
+
   return (
     <Box
       display="flex"
@@ -32,12 +35,12 @@ const OrderItem: React.FC<OrderItemProps> = ({ order, onView, onDelete }) => {
       <Flex flex="1" direction="row" gap="15px" alignItems="center">
         <Flex direction="row" justifyContent="space-between" flex="1">
           <Text fontWeight="bold">{order.title}</Text>
-          <Text>Продукты: {order.products.length}</Text>
+          <Text>{t("products")}: {order.products.length}</Text>
           <Text>{formatDate(order.date)}</Text>
         </Flex>
         <HStack spacing={4}>
           <Button size="sm" colorScheme="teal" onClick={() => onView(order)}>
-            View
+            {t("view")}
           </Button>
           <Button
             size="sm"

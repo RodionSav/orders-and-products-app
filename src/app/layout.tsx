@@ -1,41 +1,35 @@
-"use client";
-
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { store } from "@/redux/store";
-import { Provider } from "react-redux";
-import { Box, ChakraProvider, theme, useDisclosure } from "@chakra-ui/react";
+import { getLocale, getMessages } from "next-intl/server";
+import { NextIntlClientProvider } from 'next-intl';
+import ClientProviders from "../components/ClientProviders/ClientProviders";
 import TopMenu from "@/components/TopMenu/TopMenu";
 import Sidebar from "@/components/Sidebar/Sidebar";
-import { Providers } from "@/components/Providers/Providers";
+import { Box, useDisclosure } from "@chakra-ui/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function RootLayout({
+// eslint-disable-next-line @next/next/no-async-client-component
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { isOpen, onToggle } = useDisclosure();
+  const locale = await getLocale();
+  const messages = await getMessages();
 
   return (
-    <html lang="en">
+    <html lang={locale}>
       <head>
         <title>Orders & Products App</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body>
-        <ChakraProvider theme={theme}>
-          <Provider store={store}>
-            <Providers>
-              <Box bg="gray.100" minHeight="100vh">
-                <TopMenu onToggle={onToggle} />
-                {isOpen && <Sidebar isOpen={isOpen} />}
-                <Box p={4}>{children}</Box>
-              </Box>
-            </Providers>
-          </Provider>
-        </ChakraProvider>
+        <NextIntlClientProvider messages={messages}>
+          <ClientProviders>
+            {children}
+          </ClientProviders>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

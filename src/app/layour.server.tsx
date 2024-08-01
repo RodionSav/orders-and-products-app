@@ -7,6 +7,10 @@ export const metadata: Metadata = {
 
 import RootLayout from "./layout";
 
-export default function ServerLayout({ children }: { children: React.ReactNode }) {
+export default function ServerLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return <RootLayout>{children}</RootLayout>;
 }

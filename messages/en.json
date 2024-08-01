@@ -1,0 +1,52 @@
+{
+  "navigation": {
+    "today": "Today",
+    "sessions": "Sessions",
+    "inventory": "Inventory"
+  },
+  "sidebar": {
+    "home": "Home",
+    "orders": "Orders",
+    "products": "Products"
+  },
+  "orders": {
+    "items": "Items",
+    "noItems": "No orders available",
+    "createOrder": "Create Order",
+    "products": "Products",
+    "view": "View",
+    "delete": "Delete",
+    "areYouSureDelete": "Are you sure you want to delete this order?",
+    "cancel": "Cancel",
+    "confirmDelete": "Delete",
+    "validationError": "Validation Error",
+    "validationErrorMessage": "Please fill in all required fields.",
+    "orderCreated": "Order Created",
+    "orderCreatedMessage": "Your order has been created successfully."
+  },
+  "products": {
+    "items": "Products",
+    "type": "Type",
+    "chooseType": "Choose product type",
+    "from": "from",
+    "to": "to"
+  },
+  "productsPage": {
+    "heading": "Products",
+    "type": "Type",
+    "selectPlaceholder": "Select product type",
+    "types": {
+      "monitors": "Monitors",
+      "laptops": "Laptops",
+      "accessories": "Accessories"
+    }
+  },
+  "orderDetails": {
+    "heading": "Order Details",
+    "title": "Title",
+    "date": "Date",
+    "description": "Description",
+    "products": "Products",
+    "noProducts": "No products"
+  }
+}

@@ -1,20 +1,28 @@
 "use client";
 
 import React, { useState } from "react";
-import { Box, Button, Flex, Heading, Text, useDisclosure } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { FaPlus } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
 import { Order } from "@/types/types";
 import OrderItem from "../../components/OrderItem/OrderItem";
 import CreateItemForm from "../../components/CreateItem/CreateItemForm";
 import DeleteOrderModal from "@/components/DeleteModal/DeleteOrderModal";
 import OrderDetails from "@/components/OrderDetails/OrderDetails";
 import * as orderActions from "../../components/features/ordersSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useTranslations } from "next-intl";
 
 const Orders: React.FC = () => {
-  const orders = useSelector((state: RootState) => state.orders.orders);
-  const dispatch = useDispatch();
+  const orders = useAppSelector((state) => state.orders.orders);
+  const dispatch = useAppDispatch();
+  const t = useTranslations('orders');
 
   const {
     isOpen: isCreateOpen,
@@ -30,21 +38,11 @@ const Orders: React.FC = () => {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [orderToDelete, setOrderToDelete] = useState<Order | null>(null);
 
-  // Load orders from localStorage on mount
   React.useEffect(() => {
-    const loadOrders = () => {
-      const ordersFromLocalStorage = localStorage.getItem('orders');
-      if (ordersFromLocalStorage) {
-        dispatch(orderActions.setOrders(JSON.parse(ordersFromLocalStorage)));
-      }
-    };
-
-    if (typeof window !== "undefined") {
-      loadOrders();
-    }
+    // @ts-ignore
+    dispatch(orderActions.loadOrdersFromLocalStorage());
   }, [dispatch]);
 
-  // Handler to toggle order details view
   const handleSelectOrder = (order: Order) => {
     if (selectedOrder?.id !== order.id) {
       setSelectedOrder(order); // Select new order
@@ -53,21 +51,21 @@ const Orders: React.FC = () => {
     }
   };
 
-  // Handler for creating a new order
   const handleCreateOrder = () => {
-    onCreateOpen(); // Use the create modal's open handler
+    onCreateOpen();
   };
 
   const handleDeleteOrder = (order: Order) => {
-    setOrderToDelete(order); // Set the order to be deleted
-    onDeleteOpen(); // Open the delete modal
+    setOrderToDelete(order);
+    onDeleteOpen();
   };
 
   const confirmDeleteOrder = () => {
     if (orderToDelete) {
-      dispatch(orderActions.removeOrder(orderToDelete.id));
-      setOrderToDelete(null); // Clear the order to be deleted
-      onDeleteClose(); // Close the delete modal after confirming deletion
+      // @ts-ignore
+      dispatch(orderActions.removeOrderFromLocalStorage(orderToDelete.id));
+      setOrderToDelete(null);
+      onDeleteClose();
     }
   };
 
@@ -90,7 +88,7 @@ const Orders: React.FC = () => {
               <FaPlus />
             </Button>
             <Heading as="h1" mb={4}>
-              Приходы / {orders.length || 0} {/* Avoid null */}
+              {t("items")} / {orders.length || 0}
             </Heading>
           </Box>
           <Flex direction="column">
@@ -104,7 +102,7 @@ const Orders: React.FC = () => {
                 />
               ))
             ) : (
-              <Text>Нет доступных заказов.</Text>
+              <Text>{t("noItems")}</Text>
             )}
           </Flex>
         </Box>

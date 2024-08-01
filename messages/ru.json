@@ -1,0 +1,53 @@
+{
+  "navigation": {
+    "today": "Сегодня",
+    "sessions": "Сессии",
+    "inventory": "Инвентарь"
+  },
+  "sidebar": {
+    "home": "Главная",
+    "orders": "Заказы",
+    "products": "Продукты"
+  },
+  "orders": {
+    "items": "Приходы",
+    "noItems": "Нет доступных приходов",
+    "createOrder": "Создать приход",
+    "products": "Продукты",
+    "view": "Просмотр",
+    "delete": "Удалить",
+    "areYouSureDelete": "Вы уверены, что хотите удалить этот приход?",
+    "cancel": "Отменить",
+    "confirmDelete": "Удалить",
+    "validationError": "Ошибка проверки",
+    "validationErrorMessage": "Пожалуйста, заполните все обязательные поля.",
+    "orderCreated": "Приход создан",
+    "orderCreatedMessage": "Ваш приход успешно создан."
+  },
+  "products": {
+    "items": "Продукты",
+    "type": "Тип",
+    "chooseType": "Выберите тип продукта",
+    "from": "с",
+    "to": "по",
+    "nothing": "Нету продуктов"
+  },
+  "productsPage": {
+    "heading": "Продукты",
+    "type": "Тип",
+    "selectPlaceholder": "Выберите тип продукта",
+    "types": {
+      "monitors": "Мониторы",
+      "laptops": "Ноутбуки",
+      "accessories": "Аксессуары"
+    }
+  },
+  "orderDetails": {
+    "heading": "Детали заказа",
+    "title": "Название",
+    "date": "Дата",
+    "description": "Описание",
+    "products": "Продукты",
+    "noProducts": "Нет продуктов"
+  }
+}

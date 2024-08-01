@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import { SocketContext } from "../contexts/SocketContext";
 import { io, Socket } from "socket.io-client";
 import { store } from "@/redux/store";
+import * as sessionActions from '../features/sessionSlice';
 
 const socket: Socket = io("http://localhost:3000");
 
@@ -18,6 +19,10 @@ export const Providers: React.FC<ProvidersProps> = ({ children }) => {
 
     socket.on("disconnect", () => {
       console.log("Disconnected from WebSocket server");
+    });
+
+    socket.on("activeSessions", (activeSessions: number) => {
+      store.dispatch(sessionActions.setActiveSessions(activeSessions));
     });
 
     return () => {

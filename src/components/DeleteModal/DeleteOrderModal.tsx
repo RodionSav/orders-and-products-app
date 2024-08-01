@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { Order } from "@/types/types";
+import { useTranslations } from "next-intl";
 
 type DeleteOrderModalProps = {
   isOpen: boolean;
@@ -27,12 +28,14 @@ const DeleteOrderModal: React.FC<DeleteOrderModalProps> = ({
   onDelete,
   order,
 }) => {
+  const t = useTranslations('orders');
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          Вы уверены, что хотите удалить этот приход?
+          {t("areYouSureDelete")}
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -59,7 +62,7 @@ const DeleteOrderModal: React.FC<DeleteOrderModalProps> = ({
             border="none"
             color="white"
           >
-            Отменить
+            {t("cancel")}
           </Button>
           <Button
             onClick={onDelete}
@@ -69,7 +72,7 @@ const DeleteOrderModal: React.FC<DeleteOrderModalProps> = ({
             color="red"
             leftIcon={<DeleteIcon />}
           >
-            Удалить
+            {t("confirmDelete")}
           </Button>
         </ModalFooter>
       </ModalContent>

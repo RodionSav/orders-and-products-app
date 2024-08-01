@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Flex, Text, Icon } from '@chakra-ui/react';
 import { Product } from '@/types/types';
 import { FaDesktop } from 'react-icons/fa';
+import { useTranslations } from 'next-intl';
 
 interface ProductItemProps {
   product: Product;
@@ -9,6 +10,7 @@ interface ProductItemProps {
 
 const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
   const { title, specification, type, guarantee, price, serialNumber, date } = product;
+  const t = useTranslations('products');
 
   const formatGuaranteeDate = (date: string) => {
     return formatDate(date);
@@ -51,8 +53,8 @@ const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
           <Text width='max-content'>{specification}</Text>
           <Text>{serialNumber}</Text>
           <Flex mt={2} display="flex" direction="column">
-            <Text width="max-content">с {formatGuaranteeDate(guarantee.start)} </Text>
-            <Text width="max-content"> по {formatGuaranteeDate(guarantee.end)}</Text>
+            <Text width="max-content">{t('from')} {formatGuaranteeDate(guarantee.start)} </Text>
+            <Text width="max-content">{t('to')} {formatGuaranteeDate(guarantee.end)}</Text>
           </Flex>
           <Flex mt={2} direction="column">
             {getPrice(price)}

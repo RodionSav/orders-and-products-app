@@ -1,43 +1,46 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { fetchLocalStorageClient } from '../../utils/FetchClient/fetchClient';
 import { Order } from '../../types/types';
 
-const storedOrders = localStorage.getItem('orders');
+export const loadOrdersFromLocalStorage = createAsyncThunk('orders/loadOrdersFromLocalStorage', async () => {
+  const response = await fetchLocalStorageClient.get<Order[]>('orders');
+  return response;
+});
 
-const saveOrdersToLocalStorage = (orders: Order[]) => {
-  try {
-    const serializedOrders = JSON.stringify(orders);
-    localStorage.setItem('orders', serializedOrders);
-  } catch (error) {
-    console.error('Could not save orders to localStorage:', error);
-  }
-};
+export const addOrderToLocalStorage = createAsyncThunk('orders/addOrderToLocalStorage', async (order: Order) => {
+  const response = await fetchLocalStorageClient.post<Order>('orders', order);
+  return response;
+});
+
+export const removeOrderFromLocalStorage = createAsyncThunk('orders/removeOrderFromLocalStorage', async (orderId: number) => {
+  await fetchLocalStorageClient.delete<void>(`orders`, orderId); // Передаем `orderId` как данные
+  return orderId;
+});
 
 interface OrdersState {
   orders: Order[];
 }
 
 const initialState: OrdersState = {
-  orders: storedOrders ? JSON.parse(storedOrders) : [],
+  orders: [],
 };
 
 const ordersSlice = createSlice({
   name: 'orders',
   initialState,
-  reducers: {
-    setOrders(state, action: PayloadAction<Order[]>) {
-      state.orders = action.payload;
-      saveOrdersToLocalStorage(state.orders);
-    },
-    addOrder(state, action: PayloadAction<Order>) {
-      state.orders.push(action.payload);
-      saveOrdersToLocalStorage(state.orders);
-    },
-    removeOrder(state, action: PayloadAction<number>) {
-      state.orders = state.orders.filter((order) => order.id !== action.payload);
-      saveOrdersToLocalStorage(state.orders);
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(loadOrdersFromLocalStorage.fulfilled, (state, action: PayloadAction<Order[]>) => {
+        state.orders = action.payload;
+      })
+      .addCase(addOrderToLocalStorage.fulfilled, (state, action: PayloadAction<Order>) => {
+        state.orders.push(action.payload);
+      })
+      .addCase(removeOrderFromLocalStorage.fulfilled, (state, action: PayloadAction<number>) => {
+        state.orders = state.orders.filter(order => order.id !== action.payload);
+      });
   },
 });
 
-export const { setOrders, addOrder, removeOrder } = ordersSlice.actions;
 export default ordersSlice.reducer;
