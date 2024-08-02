@@ -3,10 +3,6 @@ import "./globals.css";
 import { getLocale, getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import ClientProviders from "../components/ClientProviders/ClientProviders";
-import TopMenu from "@/components/TopMenu/TopMenu";
-import Sidebar from "@/components/Sidebar/Sidebar";
-import { Box, useDisclosure } from "@chakra-ui/react";
-import { useAppSelector } from "@/redux/hooks";
 
 const inter = Inter({ subsets: ["latin"] });
 

@@ -9,10 +9,10 @@ import {
   Input,
   Textarea,
   VStack,
-  Select,
   useToast,
   CloseButton,
 } from "@chakra-ui/react";
+import Select from "react-select";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import * as orderActions from "../features/ordersSlice";
 import * as productActions from "../features/productsSlice";
@@ -98,9 +98,16 @@ export const CreateOrderForm: React.FC<Props> = ({ onClose }) => {
   };
 
   useEffect(() => {
-    // @ts-ignore
     dispatch(productActions.loadProductsFromLocalStorage());
   }, [dispatch]);
+
+  const handleProductChange = (selectedOptions: any) => {
+    const selectedProducts = selectedOptions.map((option: any) => products.find(product => product.id === option.value));
+    setOrder({
+      ...order,
+      products: selectedProducts,
+    });
+  };
 
   return (
     <Box
@@ -155,23 +162,14 @@ export const CreateOrderForm: React.FC<Props> = ({ onClose }) => {
             <FormControl>
               <FormLabel>{t("products")}</FormLabel>
               <Select
+                isMulti
+                options={products.map((product) => ({
+                  value: product.id,
+                  label: product.title,
+                }))}
+                onChange={handleProductChange}
                 placeholder={productTranslations("chooseType")}
-                value={order.products.map((product) => product.id).join(",")}
-                onChange={(e) =>
-                  setOrder({
-                    ...order,
-                    products: products.filter((product) =>
-                      e.target.value.includes(product.id.toString())
-                    ),
-                  })
-                }
-              >
-                {products.map((product) => (
-                  <option key={product.id} value={product.id}>
-                    {product.title}
-                  </option>
-                ))}
-              </Select>
+              />
             </FormControl>
             <Button type="submit" colorScheme="blue">
               {t("createOrder")}

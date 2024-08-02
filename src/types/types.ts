@@ -1,5 +1,3 @@
-// types.ts
-
 interface GuaranteePeriod {
   start: string;
   end: string;

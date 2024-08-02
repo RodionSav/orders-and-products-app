@@ -15,7 +15,6 @@ import { FaBars, FaRegClock, FaShieldAlt } from "react-icons/fa";
 import { useTranslations } from "next-intl";
 import { io, Socket } from "socket.io-client";
 import LanguageSwitch from "../LanguageSwitch/LanguageSwitch";
-import { Gamja_Flower } from "next/font/google";
 
 type Props = {
   onToggle: () => void;
@@ -27,19 +26,15 @@ const TopMenu: React.FC<Props> = ({ onToggle }) => {
   const [sessions, setSessions] = useState<number>(0);
 
   useEffect(() => {
-    // Set current time and update it every second
     setTime(new Date());
     const interval = setInterval(() => setTime(new Date()), 1000);
 
-    // Initialize Socket.io client
     const socket: Socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:3000", {transports: ['websocket']} );
 
-    // Listen for session count updates
     socket.on("sessionCount", (count: number) => {
       setSessions(count);
     });
 
-    // Clean up on component unmount
     return () => {
       clearInterval(interval);
       socket.disconnect();
