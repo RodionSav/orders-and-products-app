@@ -12,7 +12,7 @@ const port = process.env.PORT || 3000;
 app.prepare().then(() => {
   const server = express();
   const httpServer = http.createServer(server);
-  const io = new Server(httpServer);
+  const io = new Server(httpServer, {cors: {origin: 'http://localhost:3001/', methods: ['POST', 'GET']}});
 
   let activeSessions = 0;
 

@@ -32,7 +32,7 @@ const TopMenu: React.FC<Props> = ({ onToggle }) => {
     const interval = setInterval(() => setTime(new Date()), 1000);
 
     // Initialize Socket.io client
-    const socket: Socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:4000", {transports: ['websocket']} );
+    const socket: Socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:3000", {transports: ['websocket']} );
 
     // Listen for session count updates
     socket.on("sessionCount", (count: number) => {
