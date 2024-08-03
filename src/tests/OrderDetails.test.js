@@ -32,7 +32,6 @@ describe("OrderDetails", () => {
 
     expect(getByText("heading")).toBeInTheDocument();
 
-    // Используем более гибкую проверку текста
     expect(getByText("title:")).toBeInTheDocument();
     expect(getByText("Order 1")).toBeInTheDocument();
 

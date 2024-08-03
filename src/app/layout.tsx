@@ -6,7 +6,6 @@ import ClientProviders from "../components/ClientProviders/ClientProviders";
 
 const inter = Inter({ subsets: ["latin"] });
 
-// eslint-disable-next-line @next/next/no-async-client-component
 export default async function RootLayout({
   children,
 }: Readonly<{

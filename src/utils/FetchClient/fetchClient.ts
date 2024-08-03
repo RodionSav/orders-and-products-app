@@ -19,7 +19,7 @@ async function request<T>(
     if (dataFromLocalStorage) {
       return JSON.parse(dataFromLocalStorage) as T;
     }
-    return [] as T; // Return an empty array if no data found
+    return [] as T;
   }
 
   if (method === 'POST' || method === 'PATCH') {

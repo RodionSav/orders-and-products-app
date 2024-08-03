@@ -2,6 +2,79 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { fetchLocalStorageClient } from '../../utils/FetchClient/fetchClient';
 import { Order } from '../../types/types';
 
+const initialOrders = [
+  {
+    id: 1,
+    title: 'Order 1',
+    date: '2017-06-29 12:09:33',
+    description: 'desc',
+    get products () { return initialProducts.filter(product => product.order === this.id); }
+  },
+  {
+    id: 2,
+    title: 'Order 2',
+    date: '2017-06-29 12:09:33',
+    description: 'desc',
+    get products () { return initialProducts.filter(product => product.order === this.id); }
+  },
+  {
+    id: 3,
+    title: 'Order 3',
+    date: '2017-06-29 12:09:33',
+    description: 'desc',
+    get products () { return initialProducts.filter(product => product.order === this.id); }
+  }
+];
+
+const initialProducts = [
+  {
+    id: 1,
+    serialNumber: 1234,
+    isNew: 1,
+    photo: 'pathToFile.jpg',
+    title: 'Product 1',
+    type: 'Monitors',
+    specification: 'Specification 1',
+    guarantee: {
+      start: '2017-06-29 12:09:33',
+      end: '2017-06-29 12:09:33'
+    },
+    price: [
+      {value: 100, symbol: 'USD', isDefault: 0},
+      {value: 2600, symbol: 'UAH', isDefault: 1}
+    ],
+    order: 1,
+    date: '2017-06-29 12:09:33'
+  },
+  {
+    id: 2,
+    serialNumber: 1234,
+    isNew: 1,
+    photo: 'pathToFile.jpg',
+    title: 'Product 1',
+    type: 'Monitors',
+    specification: 'Specification 1',
+    guarantee: {
+      start: '2017-06-29 12:09:33',
+      end: '2017-06-29 12:09:33'
+    },
+    price: [
+      {value: 100, symbol: 'USD', isDefault: 0},
+      {value: 2600, symbol: 'UAH', isDefault: 1}
+    ],
+    order: 2,
+    date: '2017-06-29 12:09:33'
+  }
+];
+
+if (!localStorage.getItem('orders')) {
+  localStorage.setItem('orders', JSON.stringify(initialOrders));
+}
+
+if (!localStorage.getItem('products')) {
+  localStorage.setItem('products', JSON.stringify(initialProducts));
+}
+
 export const loadOrdersFromLocalStorage = createAsyncThunk('orders/loadOrdersFromLocalStorage', async () => {
   const response = await fetchLocalStorageClient.get<Order[]>('orders');
   return response;
@@ -13,7 +86,7 @@ export const addOrderToLocalStorage = createAsyncThunk('orders/addOrderToLocalSt
 });
 
 export const removeOrderFromLocalStorage = createAsyncThunk('orders/removeOrderFromLocalStorage', async (orderId: number) => {
-  await fetchLocalStorageClient.delete<void>(`orders`, orderId);
+  await fetchLocalStorageClient.delete<void>('orders', orderId);
   return orderId;
 });
 
@@ -22,7 +95,7 @@ interface OrdersState {
 }
 
 const initialState: OrdersState = {
-  orders: [],
+  orders: initialOrders,
 };
 
 const ordersSlice = createSlice({
