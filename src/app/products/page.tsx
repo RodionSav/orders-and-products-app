@@ -1,13 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useState, lazy, useEffect, Suspense } from "react";
 import { Box, Flex, Heading, Select, Text } from "@chakra-ui/react";
-import { useState } from "react";
-import ProductItem from "../../components/ProductItem/ProductItem";
-import { Product } from "@/types/types";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import * as productActions from '../../components/features/productsSlice';
+import * as productActions from "../../components/features/productsSlice";
 import { useTranslations } from "next-intl";
+import { Product } from "@/types/types";
+
+const ProductItem = lazy(() => import("../../components/ProductItem/ProductItem"));
 
 const Products: React.FC = () => {
   const products = useAppSelector((state) => state.products.products);
@@ -19,23 +19,22 @@ const Products: React.FC = () => {
     setFilter(event.target.value);
   };
 
-  React.useEffect(() => {
-    // @ts-ignore
+  useEffect(() => {
     dispatch(productActions.loadProductsFromLocalStorage());
   }, [dispatch]);
 
   return (
     <Box p={4}>
-      <Flex gap='20px'>
+      <Flex gap="20px">
         <Heading as="h1" mb={4}>
           {t("heading")} / {products.length}
         </Heading>
-        <Flex mb={4} alignItems='center' gap='10px'>
+        <Flex mb={4} alignItems="center" gap="10px">
           <Text>{t("type")}:</Text>
           <Select
             onChange={handleFilterChange}
             placeholder={t("selectPlaceholder")}
-            bgColor='white'
+            bgColor="white"
           >
             <option value="Monitors">{t("types.monitors")}</option>
             <option value="Laptops">{t("types.laptops")}</option>
@@ -44,13 +43,15 @@ const Products: React.FC = () => {
         </Flex>
       </Flex>
       <Flex direction="column">
-        {products
-          .filter(
-            (product: { type: string }) => !filter || product.type === filter
-          )
-          .map((product: Product) => (
-            <ProductItem key={product.id} product={product} />
-          ))}
+        <Suspense fallback={<div>{t("productsLoading")}</div>}>
+          {products
+            .filter(
+              (product: { type: string }) => !filter || product.type === filter
+            )
+            .map((product: Product) => (
+              <ProductItem key={product.id} product={product} />
+            ))}
+        </Suspense>
       </Flex>
     </Box>
   );

@@ -85,7 +85,6 @@ export const CreateOrderForm: React.FC<Props> = ({ onClose }) => {
       date: new Date().toISOString(),
     };
 
-    // @ts-ignore
     dispatch(orderActions.addOrderToLocalStorage(newOrder));
     onClose();
     toast({

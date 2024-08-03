@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import {
   Box,
   Button,
@@ -11,13 +11,14 @@ import {
 } from "@chakra-ui/react";
 import { FaPlus } from "react-icons/fa";
 import { Order } from "@/types/types";
-import OrderItem from "../../components/OrderItem/OrderItem";
-import CreateItemForm from "../../components/CreateItem/CreateItemForm";
-import DeleteOrderModal from "@/components/DeleteModal/DeleteOrderModal";
-import OrderDetails from "@/components/OrderDetails/OrderDetails";
 import * as orderActions from "../../components/features/ordersSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useTranslations } from "next-intl";
+
+const OrderItem = lazy(() => import("../../components/OrderItem/OrderItem"));
+const CreateItemForm = lazy(() => import("../../components/CreateItem/CreateItemForm"));
+const DeleteOrderModal = lazy(() => import("../../components/DeleteModal/DeleteOrderModal"));
+const OrderDetails = lazy(() => import("@/components/OrderDetails/OrderDetails"));
 
 const Orders: React.FC = () => {
   const orders = useAppSelector((state) => state.orders.orders);
@@ -38,14 +39,13 @@ const Orders: React.FC = () => {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [orderToDelete, setOrderToDelete] = useState<Order | null>(null);
 
-  React.useEffect(() => {
-    // @ts-ignore
+  useEffect(() => {
     dispatch(orderActions.loadOrdersFromLocalStorage());
   }, [dispatch]);
 
   const handleSelectOrder = (order: Order) => {
     if (selectedOrder?.id !== order.id) {
-      setSelectedOrder(order); // Select new order
+      setSelectedOrder(order);
     } else {
       setSelectedOrder(null);
     }
@@ -62,7 +62,6 @@ const Orders: React.FC = () => {
 
   const confirmDeleteOrder = () => {
     if (orderToDelete) {
-      // @ts-ignore
       dispatch(orderActions.removeOrderFromLocalStorage(orderToDelete.id));
       setOrderToDelete(null);
       onDeleteClose();
@@ -92,31 +91,37 @@ const Orders: React.FC = () => {
             </Heading>
           </Box>
           <Flex direction="column">
-            {orders.length > 0 ? (
-              orders.map((order) => (
-                <OrderItem
-                  key={order.id}
-                  order={order}
-                  onView={() => handleSelectOrder(order)}
-                  onDelete={() => handleDeleteOrder(order)}
-                />
-              ))
-            ) : (
-              <Text>{t("noItems")}</Text>
-            )}
+            <Suspense fallback={<div>{t("orderLoading")}</div>}>
+              {orders.length > 0 ? (
+                orders.map((order) => (
+                  <OrderItem
+                    key={order.id}
+                    order={order}
+                    onView={() => handleSelectOrder(order)}
+                    onDelete={() => handleDeleteOrder(order)}
+                  />
+                ))
+              ) : (
+                <Text>{t("noItems")}</Text>
+              )}
+            </Suspense>
           </Flex>
         </Box>
-        {selectedOrder && <OrderDetails order={selectedOrder} />}
+        <Suspense fallback={<div>{t("detailsLoading")}</div>}>
+          {selectedOrder && <OrderDetails order={selectedOrder} />}
+        </Suspense>
       </Flex>
-      {orderToDelete && (
-        <DeleteOrderModal
-          isOpen={isDeleteOpen}
-          onClose={onDeleteClose}
-          onDelete={confirmDeleteOrder}
-          order={orderToDelete}
-        />
-      )}
-      {isCreateOpen && <CreateItemForm onClose={onCreateClose} />}
+      <Suspense fallback={<div>{t("modalLoading")}</div>}>
+        {orderToDelete && (
+          <DeleteOrderModal
+            isOpen={isDeleteOpen}
+            onClose={onDeleteClose}
+            onDelete={confirmDeleteOrder}
+            order={orderToDelete}
+          />
+        )}
+        {isCreateOpen && <CreateItemForm onClose={onCreateClose} />}
+      </Suspense>
     </Box>
   );
 };

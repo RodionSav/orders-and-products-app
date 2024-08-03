@@ -13,7 +13,7 @@ export const addOrderToLocalStorage = createAsyncThunk('orders/addOrderToLocalSt
 });
 
 export const removeOrderFromLocalStorage = createAsyncThunk('orders/removeOrderFromLocalStorage', async (orderId: number) => {
-  await fetchLocalStorageClient.delete<void>(`orders`, orderId); // Передаем `orderId` как данные
+  await fetchLocalStorageClient.delete<void>(`orders`, orderId);
   return orderId;
 });
 
