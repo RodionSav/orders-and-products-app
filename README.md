@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Test Task: SPA Application "Orders & Products"
 
-## Getting Started
+## Project Description
 
-First, run the development server:
+This test task involves creating a SPA application called "Orders & Products" using modern technologies and development practices. The application should support global state management, routing, transition animations, and real-time updates via WebSocket.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Technologies and Tools
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **SSR** (Next.js) for server-side rendering
+- **Redux** for global state management
+- **ES6** (arrow functions, spread operators, template strings, etc.)
+- **Socket.io** for WebSocket communication
+- **HTML/CSS** (component layout)
+- **Chakra** and **CSS Architecture (BEM)** for styling
+- **Axios/Fetch** for REST API interactions
+- **Docker** for containerizing the application
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Installation and Setup
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. **Clone the repository:**
 
-## Learn More
+    ```bash
+    git clone <repository_link>
+    cd <project_folder>
+    ```
 
-To learn more about Next.js, take a look at the following resources:
+2. **Install dependencies:**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+    ```bash
+    npm install
+    ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+3. **Start the application:**
 
-## Deploy on Vercel
+    ```bash
+    npm run dev
+    ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    The application will be available at [http://localhost:3000](http://localhost:3000).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Functional Requirements
+
+1. **Component Layout** should match the provided design mockups.
+
+2. **Application Pages:**
+    - **Orders**: A list of orders with the ability to view order details.
+    - **Products**: A list of products with the ability to filter by product type.
+
+3. **Components:**
+    - **Navigation Menu**: Navigation menu (Sidebar) with links to Orders and Products pages.
+    - **TopMenu**: Displays current date and time in real-time, along with a session counter using WebSocket.
+    - **Orders**: Displays order information, including title, product count, creation date, order amount in different currencies, and a delete button with confirmation.
+    - **Products**: Displays all products with a filter by product type.
+
+4. **Features:**
+    - **Orders**: View order information, including title, number of products, creation dates in different formats, order total in different currencies, and a delete confirmation popup.
+    - **Products**: Filter products by type, display product details including name, type, warranty dates in various formats, price in different currencies, and associated order name.
+
+## Additional Requirements
+
+- **Docker**: Containerize the application for easy deployment.
+- **Git**: Use version control to manage project development.
+- **Readme.md**: The file should provide clear instructions on setup and running the application.
+- **Database Schema File**: Provide a database schema file compatible with MySQL Workbench to compare the designed schema with the final implementation.
+
+## Enhancements (for Junior+ Level)
+
+- **TypeScript** for type safety
+- **Unit Tests** for testing components and functions
+- **i18n** for internationalization
+- **Web Storage** for data persistence
+- **Lazy Loading** for performance optimization
+
+
