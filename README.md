@@ -65,7 +65,6 @@ This test task involves creating a SPA application called "Orders & Products" us
 - **Docker**: Containerize the application for easy deployment.
 - **Git**: Use version control to manage project development.
 - **Readme.md**: The file should provide clear instructions on setup and running the application.
-- **Database Schema File**: Provide a database schema file compatible with MySQL Workbench to compare the designed schema with the final implementation.
 
 ## Enhancements (for Junior+ Level)
 
