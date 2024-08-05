@@ -1,5 +1,8 @@
 # Test Task: SPA Application "Orders & Products"
 
+## DEMO LINK
+
+
 ## Project Description
 
 This test task involves creating a SPA application called "Orders & Products" using modern technologies and development practices. The application should support global state management, routing, transition animations, and real-time updates via WebSocket.
