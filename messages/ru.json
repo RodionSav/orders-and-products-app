@@ -24,7 +24,10 @@
     "orderCreated": "Приход создан",
     "orderCreatedMessage": "Ваш приход успешно создан.",
     "title": "Название",
-    "description": "Описание"
+    "description": "Описание",
+    "orderLoading": "Загрузка заказов...",
+    "detailsLoading": "Загрузка деталей заказа...",
+    "modalLoading": "Загрузка модального окна..."
   },
   "products": {
     "items": "Продукты",
@@ -42,7 +45,8 @@
       "monitors": "Мониторы",
       "laptops": "Ноутбуки",
       "accessories": "Аксессуары"
-    }
+    },
+    "productsLoading": "Загрузка продуктов..."
   },
   "orderDetails": {
     "heading": "Детали заказа",

@@ -24,7 +24,10 @@
     "orderCreated": "Order Created",
     "orderCreatedMessage": "Your order has been created successfully.",
     "title": "Title",
-    "description": "Description"
+    "description": "Description",
+    "orderLoading": "Loading orders...",
+    "detailsLoading": "Loading order details...",
+    "modalLoading": "Loading modal window..."
   },
   "products": {
     "items": "Products",
@@ -41,7 +44,8 @@
       "monitors": "Monitors",
       "laptops": "Laptops",
       "accessories": "Accessories"
-    }
+    },
+    "productsLoading": "Loading products..."
   },
   "orderDetails": {
     "heading": "Order Details",

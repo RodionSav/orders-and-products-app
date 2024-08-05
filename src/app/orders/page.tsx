@@ -40,7 +40,9 @@ const Orders: React.FC = () => {
   const [orderToDelete, setOrderToDelete] = useState<Order | null>(null);
 
   useEffect(() => {
-    dispatch(orderActions.loadOrdersFromLocalStorage());
+    if (typeof window !== 'undefined') {
+      dispatch(orderActions.loadOrdersFromLocalStorage());
+    }
   }, [dispatch]);
 
   const handleSelectOrder = (order: Order) => {

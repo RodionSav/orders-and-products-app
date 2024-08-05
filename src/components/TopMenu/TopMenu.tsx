@@ -44,7 +44,7 @@ const TopMenu: React.FC<Props> = ({ onToggle }) => {
     const interval = setInterval(() => setTime(new Date()), 1000);
 
     const socket: Socket = io(
-      process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:3000",
+      process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:8001",
       { transports: ["websocket"] }
     );
 

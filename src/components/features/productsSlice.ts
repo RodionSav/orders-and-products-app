@@ -1,3 +1,5 @@
+'use client';
+
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { fetchLocalStorageClient } from '../../utils/FetchClient/fetchClient';
 import { Product } from '../../types/types';

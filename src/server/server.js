@@ -7,12 +7,12 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8001;
 
 app.prepare().then(() => {
   const server = express();
   const httpServer = http.createServer(server);
-  const io = new Server(httpServer, {cors: {origin: 'http://localhost:3001/', methods: ['POST', 'GET']}});
+  const io = new Server(httpServer, {cors: {origin: 'http://localhost:8001/', methods: ['POST', 'GET']}});
 
   let activeSessions = 0;
 

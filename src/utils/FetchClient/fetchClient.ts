@@ -1,3 +1,5 @@
+const isClient = typeof window !== 'undefined';
+
 const BASE_URL = 'localStorage';
 
 function wait(delay: number) {
@@ -11,6 +13,10 @@ async function request<T>(
   method: RequestMethod = 'GET',
   data?: any,
 ): Promise<T> {
+  if (!isClient) {
+    throw new Error('localStorage is only available in the browser');
+  }
+
   const storageKey = url.replace('/', '');
 
   if (method === 'GET') {
