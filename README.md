@@ -2,7 +2,7 @@
 
 ## DEMO LINK
 
-You can view the live demo of the application here: [Orders & Products Demo](https://orders-and-products-app-ztbg-bnztmqwek-rodionsavs-projects.vercel.app/)
+You can view the live demo of the application here: [Orders & Products Demo](https://orders-and-products-app-ztbg.vercel.app/)
 
 ## Project Description
 
